@@ -57,7 +57,9 @@ jobs:
       - name: Prepare TestPlan
         run: ./allurectl job-run plan --output-file ${ALLURE_TESTPLAN_PATH}
       - name: Run the tests
-        run: ./allurectl watch -- pipenv run pytest --alluredir=${ALLURE_TESTPLAN_PATH} # allows sending the test results in the real time
+        run: |
+          pipenv run pytest --alluredir=${ALLURE_TESTPLAN_PATH} # allows sending the test results in the real time
+          ./allurectl upload --endpoint ${ALLURE_ENDPOINT} --token ${ALLURE_TOKEN} --project-id ${ALLURE_PROJECT_ID} --launch-name "github launch ${ALLURE_JOB_UID}" /tmp/my_allure_results/
         env:
           ALLURE_JOB_UID: ${{steps.allure-job-uid.outputs.result}}
           TEST_ENDPOINT: ${{ github.event.inputs.TEST_ENDPOINT }}
