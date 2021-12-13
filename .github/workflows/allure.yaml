@@ -54,13 +54,13 @@ jobs:
       - name: Install dependencies
         run: |
           pip install pipenv && pipenv install
-      - name: Prepare TestPlan
-        run: ./allurectl job-run plan --output-file ${ALLURE_TESTPLAN_PATH}
+#      - name: Prepare TestPlan
+#        run: ./allurectl job-run plan --output-file ${ALLURE_TESTPLAN_PATH}
       - name: Run the tests
         run: |
           mkdir -p ${ALLURE_TESTPLAN_PATH}
           pipenv run pytest --alluredir=${ALLURE_TESTPLAN_PATH} # allows sending the test results in the real time
-          ./allurectl upload --endpoint ${ALLURE_ENDPOINT} --token ${ALLURE_TOKEN} --project-id ${ALLURE_PROJECT_ID} --launch-name "github launch ${ALLURE_JOB_UID}" /tmp/my_allure_results/
+          ./allurectl upload --endpoint ${ALLURE_ENDPOINT} --token ${ALLURE_TOKEN} --project-id ${ALLURE_PROJECT_ID} --launch-name "github launch ${ALLURE_JOB_UID}" ${ALLURE_TESTPLAN_PATH}
         env:
           ALLURE_JOB_UID: ${{steps.allure-job-uid.outputs.result}}
           TEST_ENDPOINT: ${{ github.event.inputs.TEST_ENDPOINT }}
