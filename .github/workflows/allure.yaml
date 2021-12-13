@@ -50,6 +50,7 @@ jobs:
           chmod +x ./allurectl
       - name: Install dependencies
         run: |
+          sudo apt update && sudo apt install -y pyenv
           pip install pipenv && pipenv install
       - name: Prepare TestPlan
         run: ./allurectl job-run plan --output-file ${ALLURE_TESTPLAN_PATH}
