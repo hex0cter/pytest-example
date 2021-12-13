@@ -48,9 +48,11 @@ jobs:
         run: |
           wget https://github.com/allure-framework/allurectl/releases/latest/download/allurectl_linux_386 -O ./allurectl
           chmod +x ./allurectl
+      - name: Install pyenv
+        run: |
+          curl https://pyenv.run | bash
       - name: Install dependencies
         run: |
-          sudo apt update && sudo apt install -y pyenv
           pip install pipenv && pipenv install
       - name: Prepare TestPlan
         run: ./allurectl job-run plan --output-file ${ALLURE_TESTPLAN_PATH}
