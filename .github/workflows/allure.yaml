@@ -27,6 +27,7 @@ env:
 
 jobs:
   all-tests:
+    name: all the tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -62,7 +63,7 @@ jobs:
           set -x
           mkdir -p ${TEST_REPORT_DIR}
           pipenv run pytest --alluredir=${TEST_REPORT_DIR} # allows sending the test results in the real time
-          # ./allurectl upload --endpoint ${ALLURE_ENDPOINT} --token ${ALLURE_TOKEN} --project-id ${ALLURE_PROJECT_ID} --launch-name "github launch ${ALLURE_JOB_UID}" ${TEST_REPORT_DIR}
+          ./allurectl upload --endpoint ${ALLURE_ENDPOINT} --token ${ALLURE_TOKEN} --project-id ${ALLURE_PROJECT_ID} --launch-name "github launch ${ALLURE_JOB_UID}" ${TEST_REPORT_DIR}
         env:
           ALLURE_JOB_UID: ${{steps.allure-job-uid.outputs.result}}
           TEST_ENDPOINT: ${{ github.event.inputs.TEST_ENDPOINT }}
