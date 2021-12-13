@@ -20,8 +20,9 @@ env:
   ALLURE_ENDPOINT: ${{ secrets.ALLURE_ENDPOINT }}
   ALLURE_TOKEN: ${{ secrets.ALLURE_TOKEN }}
   ALLURE_PROJECT_ID: ${{ secrets.ALLURE_PROJECT_ID }}
-  ALLURE_TESTPLAN_PATH: "/tmp/allure_results" # needed to filter the tests
+  ALLURE_TESTPLAN_PATH: "./testplan.json" # needed to filter the tests
   ALLURE_RESULTS: "allure-results" # folder with the test results
+  TEST_REPORT_DIR: "/tmp/allure_results"
   ALLURE_JOB_RUN_ID: ${{ github.event.inputs.ALLURE_JOB_RUN_ID }}
 
 jobs:
@@ -59,9 +60,9 @@ jobs:
       - name: Run the tests
         run: |
           set -x
-          mkdir -p ${ALLURE_TESTPLAN_PATH}
-          pipenv run pytest --alluredir=${ALLURE_TESTPLAN_PATH} # allows sending the test results in the real time
-          # ./allurectl upload --endpoint ${ALLURE_ENDPOINT} --token ${ALLURE_TOKEN} --project-id ${ALLURE_PROJECT_ID} --launch-name "github launch ${ALLURE_JOB_UID}" ${ALLURE_TESTPLAN_PATH}
+          mkdir -p ${TEST_REPORT_DIR}
+          pipenv run pytest --alluredir=${TEST_REPORT_DIR} # allows sending the test results in the real time
+          # ./allurectl upload --endpoint ${ALLURE_ENDPOINT} --token ${ALLURE_TOKEN} --project-id ${ALLURE_PROJECT_ID} --launch-name "github launch ${ALLURE_JOB_UID}" ${TEST_REPORT_DIR}
         env:
           ALLURE_JOB_UID: ${{steps.allure-job-uid.outputs.result}}
           TEST_ENDPOINT: ${{ github.event.inputs.TEST_ENDPOINT }}
